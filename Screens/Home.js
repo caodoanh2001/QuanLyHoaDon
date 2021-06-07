@@ -6,7 +6,6 @@ import {MyContext} from '../App'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import styles from '../styles/styles_home'
 import AboutMe from './AboutMe';
-// import { NetworkInfo } from "react-native-network-info";
 
 background = require('../img/background.jpg');
 logo = require('../img/logo.png');
@@ -18,7 +17,7 @@ const Home = ({navigation}) =>{
     })
 
     const fetchData = () =>{
-        fetch("http://1197a2051678.ngrok.io")
+        fetch("https://d47a6b56120c.ngrok.io")
         .then(res => res.json())
         .then(results => {
             dispatch({type:"ADD_DATA",payload:results})
@@ -40,7 +39,7 @@ const Home = ({navigation}) =>{
                 source={{uri:item.picture}}/>
                 <View >
                     <Text style={styles.text}>Hóa đơn: {item.name}</Text>
-                    <Text style={styles.text}>Người mua: {item.buyer}</Text>
+                    <Text style={styles.text}>Địa chỉ: {item.seller}</Text>
                 </View>
             </View>
         </Card>

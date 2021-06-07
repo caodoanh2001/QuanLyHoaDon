@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { View, Image,Text,Linking,Platform, Alert } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Title, Card, Button } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import styles from '../styles/styles_info'
 import config from '../configs/config'
 
 const Info = (props)=>{
 
-    const {_id,name,buyer,picture, seller, address, timestamp, totalcost} = props.route.params.item;
+    const { _id,name, buyer, picture, seller, address, timestamp, totalcost } = props.route.params.item;
     console.log(_id)
     const deleteEmployee = () =>{
-        fetch("http://1197a2051678.ngrok.io/delete",{
+        fetch("http://d47a6b56120c.ngrok.io/delete",{
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'

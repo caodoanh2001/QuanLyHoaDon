@@ -4,10 +4,8 @@ import { TextInput,Button } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker';
 import styles from '../styles/styles_Receipt'
 
-// var cloudinary = require('cloudinary');
-
-
 const Receipt = ({navigation,route}) =>{
+    // Thông tin hóa đơn
     const getDetails = (type) =>{
         if(route.params){
             switch(type){
@@ -36,8 +34,7 @@ const Receipt = ({navigation,route}) =>{
     const [modal, setModal] = useState(false)
 
     const _submitData = () =>{
-
-        fetch("http://5d58294789a7.ngrok.io/predict" , {
+        fetch("http://63566246db32.ngrok.io/predict" , {
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -47,7 +44,7 @@ const Receipt = ({navigation,route}) =>{
             })
         }).then(res_img => res_img.json())
         .then(data => {
-            fetch("http://1197a2051678.ngrok.io/send-data", {
+            fetch("http://d47a6b56120c.ngrok.io/send-data", {
                 method:'POST',
                 headers:{
                     'Content-Type' : 'application/json'
@@ -63,7 +60,7 @@ const Receipt = ({navigation,route}) =>{
                 })
             }).then(res => res.json())
             .then(data =>{
-                console.log(data)
+                // console.log(data)
                 Alert.alert(`Đã thêm hóa đơn "${data.name}" thành công`)
                 navigation.navigate("Home")
             }).catch(err =>{
@@ -75,7 +72,7 @@ const Receipt = ({navigation,route}) =>{
     }
 
     const updateData = ()=>{
-        fetch("http://1197a2051678.ngrok.io/update", {
+        fetch("http://d47a6b56120c.ngrok.io/update", {
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -96,7 +93,7 @@ const Receipt = ({navigation,route}) =>{
 
     const _uploadImage = () => {
         const options ={
-            title : 'Select Image',
+            title : 'Chọn ảnh',
             storageOptions: {
                 skipBackup: true,
                 path:'_ImageReceipt'
@@ -113,7 +110,6 @@ const Receipt = ({navigation,route}) =>{
                 const type = "image/jpg"
                 const name = response.fileName
                 const source = {uri,type,name}
-                // console.log(source)
                 handleUpdata(source)
             }
         })
@@ -121,7 +117,7 @@ const Receipt = ({navigation,route}) =>{
 
     const _takePhoto = () => {
         const options ={
-            title : 'Select Image',
+            title : 'Chọn ảnh',
             storageOptions: {
                 skipBackup: true,
                 path:'CS526_OCR'
@@ -144,27 +140,23 @@ const Receipt = ({navigation,route}) =>{
     }
 
     const handleUpdata = (photo) => {
+        console.log('Vào đây')
         const data = new FormData()
         data.append('file', photo)
         data.append("upload_preset", "receipt_imgs")
-        data.append("cloud_name","cs-526-doanh-bc")
-        data.append("api_key","885336143474268")
+        data.append("cloud_name", "cs-526-doanh-bc")
+        data.append("api_key", "885336143474268")
         data.append("api_secret", "BIaSxlwvuSjvu8KKBun2qvU9uOc")
-        console.log(data)
-        fetch("https://api.cloudinary.com/v1_1/cs-526-doanh-bc/image/upload",{
-            method:'POST',
-            body:data,
-            headers:{
-                'Accept':'application/json',
-                'Content-Type':'multipart/form-data'
-            }
+        console.log('Tới đây')
+        fetch("https://api.cloudinary.com/v1_1/cs-526-doanh-bc/image/upload", {
+            method:"post",
+            body:data
         }).then(res => res.json())
         .then(data => {
             setPicture(data.url)
             setModal(false)
-            console.log(data)
         }).catch(err => {
-            Alert.alert(err.message)
+            Alert.alert("Lỗi upload ảnh")
         })
     }
 
@@ -172,20 +164,20 @@ const Receipt = ({navigation,route}) =>{
         <ScrollView>
         <View style={styles.container}>
             <TextInput style = {{borderColor: "#000011"}}
-                label='Tên hóa đơn'
-                style={styles.input}
-                value={name}
+                label = 'Tên hóa đơn'
+                style = {styles.input}
+                value = {name}
                 theme = {theme}
                 mode="outlined"
                 onChangeText={text => setName( text )}
             />
 
             <TextInput style = {{borderColor: "#000011"}}
-                label='Tên người mua'
-                style={styles.input}
-                value={buyer}
+                label = 'Tên người mua'
+                style = {styles.input}
+                value = {buyer}
                 theme = {theme}
-                mode="outlined"
+                mode = "outlined"
                 onChangeText={text => setBuyer( text )}
             />
 
