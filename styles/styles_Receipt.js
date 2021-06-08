@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         padding:10,
         justifyContent:'space-around',
-        backgroundColor:'white',
+        // backgroundColor:'white',
     },
     modalView:{
         position:'absolute',

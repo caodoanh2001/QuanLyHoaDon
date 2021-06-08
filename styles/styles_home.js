@@ -24,7 +24,14 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
-      },
+    },
+    textInputStyle: {
+        height: 40,
+        borderWidth: 1,
+        paddingLeft: 20,
+        margin: 5,
+        // borderColor = '#009688'
+    }
 })
 
 export default styles;

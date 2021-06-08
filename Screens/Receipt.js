@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View,Alert, Modal,ScrollView } from 'react-native';
+import { View,Alert, Modal,ScrollView, ImageBackground } from 'react-native';
 import { TextInput,Button } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker';
 import styles from '../styles/styles_Receipt'
 
-const Receipt = ({navigation,route}) =>{
+var background = require('../img/background.jpg');
+var logo = require('../img/logo.png');
+
+const Receipt = ({navigation, route}) =>{
     // Thông tin hóa đơn
     const getDetails = (type) =>{
         if(route.params){
@@ -27,14 +30,17 @@ const Receipt = ({navigation,route}) =>{
         }
         return ""
     }
-
     const [name, setName] = useState(getDetails("name_receipt"))
     const [buyer, setBuyer] = useState(getDetails("name_buyer"))
+    const [seller, setSeller] = useState(getDetails("seller"))
+    const [address, setAddress] = useState(getDetails("address"))
+    const [timestamp, setTimestamp] = useState(getDetails("timestamp"))
+    const [totalcost, setTotalcost] = useState(getDetails("totalcost"))
     const [picture, setPicture] = useState(getDetails("url_picture"))
     const [modal, setModal] = useState(false)
 
     const _submitData = () =>{
-        fetch("http://63566246db32.ngrok.io/predict" , {
+        fetch("http://52621c69ffb2.ngrok.io/predict" , {
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -81,6 +87,11 @@ const Receipt = ({navigation,route}) =>{
                 id : route.params._id,
                 name : name,
                 buyer : buyer,
+                picture : picture,
+                seller : route.params.seller,
+                address : route.params.address,
+                timestamp: route.params.timestamp,
+                totalcost : route.params.totalcost,
             })
         }).then(res => res.json())
         .then(data =>{
@@ -161,9 +172,10 @@ const Receipt = ({navigation,route}) =>{
     }
 
     return(
+        <ImageBackground source = {background} style={{flex:1}}>
         <ScrollView>
         <View style={styles.container}>
-            <TextInput style = {{borderColor: "#000011"}}
+            <TextInput style = {{borderColor: "#20B2AA"}}
                 label = 'Tên hóa đơn'
                 style = {styles.input}
                 value = {name}
@@ -172,7 +184,7 @@ const Receipt = ({navigation,route}) =>{
                 onChangeText={text => setName( text )}
             />
 
-            <TextInput style = {{borderColor: "#000011"}}
+            <TextInput style = {{borderColor: "#20B2AA"}}
                 label = 'Tên người mua'
                 style = {styles.input}
                 value = {buyer}
@@ -181,16 +193,52 @@ const Receipt = ({navigation,route}) =>{
                 onChangeText={text => setBuyer( text )}
             />
 
-            <Button color="#4169e1" icon={picture == ""?"upload":"check-bold"} style={styles.input} mode="contained" onPress={() => setModal(true)}>
+            <TextInput style = {{borderColor: "#20B2AA"}}
+                label = 'Tên cửa hàng'
+                style = {styles.input}
+                value = {seller}
+                theme = {theme}
+                mode = "outlined"
+                onChangeText={text => setSeller( text )}
+            />
+
+            <TextInput style = {{borderColor: "#20B2AA"}}
+                label = 'Địa chỉ'
+                style = {styles.input}
+                value = {address}
+                theme = {theme}
+                mode = "outlined"
+                onChangeText={text => setAddress( text )}
+            />
+
+            <TextInput style = {{borderColor: "#20B2AA"}}
+                label = 'Thời gian'
+                style = {styles.input}
+                value = {timestamp}
+                theme = {theme}
+                mode = "outlined"
+                onChangeText={text => setTimestamp( text )}
+            />
+
+            <TextInput style = {{borderColor: "#20B2AA"}}
+                label = 'Tổng tiền'
+                style = {styles.input}
+                value = {totalcost}
+                theme = {theme}
+                mode = "outlined"
+                onChangeText={text => setTotalcost( text )}
+            />
+
+            <Button color="#FFFAF0" icon={picture == ""?"upload":"check-bold"} style={styles.input} mode="contained" onPress={() => setModal(true)}>
                 Nhập ảnh hóa đơn
             </Button>
 
             {route.params?
-                <Button color="#4169e1" icon="content-save" style={styles.input} mode="contained" onPress={() => updateData()}>
+                <Button color="#FFFAF0" icon="content-save" style={styles.input} mode="contained" onPress={() => updateData()}>
                     Cập nhật
                 </Button>
                 :
-                <Button color = "#4169e1" icon="content-save" style={styles.input} mode="contained" onPress={() => _submitData()}>
+                <Button color = "#FFFAF0" icon="content-save" style={styles.input} mode="contained" onPress={() => _submitData()}>
                     Lưu
                 </Button>
             }
@@ -202,14 +250,14 @@ const Receipt = ({navigation,route}) =>{
             >
                 <View style={styles.modalView}>
                     <View style={styles.buttonModalView}>
-                        <Button color = "#4169e1" icon="camera" style={styles.input} mode="contained" onPress={() => _takePhoto()}>
+                        <Button color = "#FFFAF0" icon="camera" style={styles.input} mode="contained" onPress={() => _takePhoto()}>
                             Chụp ảnh
                         </Button>
-                        <Button color = "#4169e1" icon="folder-image" style={styles.input} mode="contained" onPress={() => _uploadImage()}>
+                        <Button color = "#FFFAF0" icon="folder-image" style={styles.input} mode="contained" onPress={() => _uploadImage()}>
                             Tải lên từ máy
                         </Button>
                     </View>
-                    <Button color = "#4169e1" icon="cancel" style={styles.input} mode="contained" onPress={() => setModal(false)}>
+                    <Button color = "#FFFAF0" icon="cancel" style={styles.input} mode="contained" onPress={() => setModal(false)}>
                         Thoát
                     </Button>
                 </View>
@@ -217,12 +265,13 @@ const Receipt = ({navigation,route}) =>{
             </Modal>
         </View>
         </ScrollView>
+        </ImageBackground>
     )
 }
 
 const theme = {
     colors: {  
-      primary: 'red',
+      primary: '#20B2AA',
     },
   };
 

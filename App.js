@@ -10,11 +10,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import {reducer} from './reducers/reducer'
+import AboutMe from './Screens/AboutMe';
 
 const store  = createStore(reducer)
-
-// export const MyContext = createContext()
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator();
 const myOptions = {
   title:"Quản lý hóa đơn v1.0",
@@ -23,34 +22,35 @@ const myOptions = {
     backgroundColor:"white"
   }
 }
+
 function App(){
-    return (
-      <View style={styles.container}>
-        <Stack.Navigator>
-          <Stack.Screen 
-            name="Home" 
-            component={Home} 
-            options={myOptions}
-          />
-          <Stack.Screen 
-            name="Create" 
-            component={Receipt} 
-            options={{...myOptions, title:"Thêm mới hóa đơn"}}
-          />
-          <Stack.Screen 
-            name="Receipt_info" 
-            component={Info}
-            options={{...myOptions, title:"Thông tin hóa đơn"}}
-          />
-          <Stack.Screen 
-            name="ViewImage" 
-            component={ViewImage}
-            options={{...myOptions, title:"Xem hóa đơn"}}
-          />
-        </Stack.Navigator>
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="Home" 
+          component={Home} 
+          options={myOptions}
+        />
+        <Stack.Screen 
+          name="Create" 
+          component={Receipt} 
+          options={{...myOptions, title:"Thêm mới hóa đơn"}}
+        />
+        <Stack.Screen 
+          name="Receipt_info" 
+          component={Info}
+          options={{...myOptions, title:"Thông tin hóa đơn"}}
+        />
+        <Stack.Screen 
+          name="ViewImage" 
+          component={ViewImage}
+          options={{...myOptions, title:"Xem hóa đơn"}}
+        />
+      </Stack.Navigator>
+    </View>
+  );
+}
 
   
 export default ()=>{
