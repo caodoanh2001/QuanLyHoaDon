@@ -11,12 +11,13 @@ const styles = StyleSheet.create({
     cardViews:{
         flexDirection:'row',
         backgroundColor: '#fff',
-        borderRadius: 16,
+        borderRadius: 18,
     },
     text:{
-        fontSize:20,
+        fontSize:16,
         marginLeft:10,
-        paddingTop:5
+        paddingTop:5,
+        fontFamily: 'Roboto'
     },
     fab: {
         backgroundColor: "#ffffff",
@@ -24,6 +25,13 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+    },
+    fab_about: {
+        backgroundColor: "#ffffff",
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 80,
     },
     textInputStyle: {
         height: 40,

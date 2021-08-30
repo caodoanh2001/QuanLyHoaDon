@@ -1,6 +1,6 @@
 import React, { createContext,useReducer } from 'react';
 import { View,StyleSheet } from 'react-native';
-import Home from './Screens/Home';
+import Homepage from './Screens/Homepage';
 import Receipt from './Screens/Receipt';
 import Info from './Screens/Info';
 import ViewImage from './Screens/ViewImage';
@@ -11,10 +11,16 @@ import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import {reducer} from './reducers/reducer'
 import AboutMe from './Screens/AboutMe';
+import Home from './Screens/Login'
+import Register from './Screens/Register'
+import Profile from './Screens/Profile';
+import Loading from './Screens/Loading';
+import ChangePass from './Screens/ChangePass';
 
 const store  = createStore(reducer)
-const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator();
+
+
 const myOptions = {
   title:"Quản lý hóa đơn v1.0",
   headerTintColor:"#333",
@@ -28,9 +34,35 @@ function App(){
     <View style={styles.container}>
       <Stack.Navigator>
         <Stack.Screen 
+          name="Loading" 
+          component={Loading} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
           name="Home" 
           component={Home} 
           options={myOptions}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="Register" 
+          component={Register} 
+          options={{...myOptions, title:"Đăng ký"}}
+        />
+        <Stack.Screen 
+          name="ChangePass" 
+          component={ChangePass} 
+          options={{...myOptions, title:"Đổi mật khẩu"}}
+        />
+        <Stack.Screen 
+          name="Profile" 
+          component={Profile} 
+          options={{...myOptions, title:"Người dùng"}}
+        />
+        <Stack.Screen 
+          name="Homepage" 
+          component={Homepage} 
+          options={{ headerShown: false }}
         />
         <Stack.Screen 
           name="Create" 
@@ -40,7 +72,12 @@ function App(){
         <Stack.Screen 
           name="Receipt_info" 
           component={Info}
-          options={{...myOptions, title:"Thông tin hóa đơn"}}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="AboutMe" 
+          component={AboutMe}
+          options={{...myOptions, title:"Về chúng tôi"}}
         />
         <Stack.Screen 
           name="ViewImage" 

@@ -3,6 +3,7 @@ import { View,Alert, Modal,ScrollView, ImageBackground } from 'react-native';
 import { TextInput,Button } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker';
 import styles from '../styles/styles_Receipt'
+import RNPickerSelect from 'react-native-picker-select';
 
 var background = require('../img/background.jpg');
 var logo = require('../img/logo.png');
@@ -10,7 +11,7 @@ var logo = require('../img/logo.png');
 const Receipt = ({navigation, route}) =>{
     // Thông tin hóa đơn
     const getDetails = (type) =>{
-        if(route.params){
+        if (route.params) {
             switch(type){
                 case "name_receipt":
                     return route.params.name
@@ -38,9 +39,9 @@ const Receipt = ({navigation, route}) =>{
     const [totalcost, setTotalcost] = useState(getDetails("totalcost"))
     const [picture, setPicture] = useState(getDetails("url_picture"))
     const [modal, setModal] = useState(false)
-
+    
     const _submitData = () =>{
-        fetch("http://52621c69ffb2.ngrok.io/predict" , {
+        fetch("http://103.195.236.219:3000/predict" , {
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -50,12 +51,13 @@ const Receipt = ({navigation, route}) =>{
             })
         }).then(res_img => res_img.json())
         .then(data => {
-            fetch("http://d47a6b56120c.ngrok.io/send-data", {
+            fetch("http://103.195.236.219:5000/send-data", {
                 method:'POST',
                 headers:{
                     'Content-Type' : 'application/json'
                 },
                 body:JSON.stringify({
+                    username: route.params.username,
                     name : name,
                     buyer : buyer,
                     picture : picture,
@@ -66,9 +68,8 @@ const Receipt = ({navigation, route}) =>{
                 })
             }).then(res => res.json())
             .then(data =>{
-                // console.log(data)
-                Alert.alert(`Đã thêm hóa đơn "${data.name}" thành công`)
-                navigation.navigate("Home")
+                Alert.alert(`Đã thêm hóa đơn thành công`)
+                navigation.navigate("Homepage", {username: route.params.username})
             }).catch(err =>{
                 console.log("error",err)
             })
@@ -78,25 +79,26 @@ const Receipt = ({navigation, route}) =>{
     }
 
     const updateData = ()=>{
-        fetch("http://d47a6b56120c.ngrok.io/update", {
+        fetch("http://103.195.236.219:5000/update", {
             method:'POST',
             headers:{
                 'Content-Type' : 'application/json'
             },
             body:JSON.stringify({
+                username : route.params.username,
                 id : route.params._id,
                 name : name,
                 buyer : buyer,
                 picture : picture,
-                seller : route.params.seller,
-                address : route.params.address,
-                timestamp: route.params.timestamp,
-                totalcost : route.params.totalcost,
+                seller : seller,
+                address : address,
+                timestamp : timestamp,
+                totalcost : totalcost,
             })
         }).then(res => res.json())
         .then(data =>{
             Alert.alert(`${data.name} được cập nhật thành công!!`)
-            navigation.navigate("Home")
+            navigation.navigate("Homepage")
         }).catch(err =>{
             console.log("error",err)
         })
@@ -175,14 +177,35 @@ const Receipt = ({navigation, route}) =>{
         <ImageBackground source = {background} style={{flex:1}}>
         <ScrollView>
         <View style={styles.container}>
-            <TextInput style = {{borderColor: "#20B2AA"}}
+            <View style = {{
+                    borderColor: "black", 
+                    borderWidth: 1, 
+                    margin:6,
+                    backgroundColor:"white",
+                    borderRadius: 5
+                }}>
+                <RNPickerSelect
+                    placeholder={{
+                        label: 'Chọn loại hóa đơn',
+                        value: null,
+                    }}
+                    onValueChange={(value) => setName(value)}
+                    items={[
+                        { label: 'Đi chợ', value: 'market' },
+                        { label: 'Đi cà phê', value: 'coffee' },
+                        { label: 'Khác', value: 'others' },
+                    ]}
+                />
+            </View>
+
+            {/* <TextInput style = {{borderColor: "#20B2AA"}}
                 label = 'Tên hóa đơn'
                 style = {styles.input}
                 value = {name}
                 theme = {theme}
                 mode="outlined"
                 onChangeText={text => setName( text )}
-            />
+            /> */}
 
             <TextInput style = {{borderColor: "#20B2AA"}}
                 label = 'Tên người mua'
@@ -229,17 +252,17 @@ const Receipt = ({navigation, route}) =>{
                 onChangeText={text => setTotalcost( text )}
             />
 
-            <Button color="#FFFAF0" icon={picture == ""?"upload":"check-bold"} style={styles.input} mode="contained" onPress={() => setModal(true)}>
+            <Button color="#8A2BE2" icon={picture == "" ? "upload" : "check-bold"} style={styles.input} mode="contained" onPress={() => setModal(true)}>
                 Nhập ảnh hóa đơn
             </Button>
 
-            {route.params?
-                <Button color="#FFFAF0" icon="content-save" style={styles.input} mode="contained" onPress={() => updateData()}>
-                    Cập nhật
+            {route.params.edit?
+                <Button color="#8A2BE2" icon="content-save" style={styles.input} mode="contained" onPress={() => updateData()}>
+                Cập nhật
                 </Button>
                 :
-                <Button color = "#FFFAF0" icon="content-save" style={styles.input} mode="contained" onPress={() => _submitData()}>
-                    Lưu
+                <Button color = "#8A2BE2" icon="content-save" style={styles.input} mode="contained" onPress={() => _submitData()}>
+                Lưu
                 </Button>
             }
             <Modal
@@ -250,14 +273,14 @@ const Receipt = ({navigation, route}) =>{
             >
                 <View style={styles.modalView}>
                     <View style={styles.buttonModalView}>
-                        <Button color = "#FFFAF0" icon="camera" style={styles.input} mode="contained" onPress={() => _takePhoto()}>
+                        <Button color = "#8A2BE2" icon="camera" style={styles.input} mode="contained" onPress={() => _takePhoto()}>
                             Chụp ảnh
                         </Button>
-                        <Button color = "#FFFAF0" icon="folder-image" style={styles.input} mode="contained" onPress={() => _uploadImage()}>
+                        <Button color = "#8A2BE2" icon="folder-image" style={styles.input} mode="contained" onPress={() => _uploadImage()}>
                             Tải lên từ máy
                         </Button>
                     </View>
-                    <Button color = "#FFFAF0" icon="cancel" style={styles.input} mode="contained" onPress={() => setModal(false)}>
+                    <Button color = "#8A2BE2" icon="cancel" style={styles.input} mode="contained" onPress={() => setModal(false)}>
                         Thoát
                     </Button>
                 </View>

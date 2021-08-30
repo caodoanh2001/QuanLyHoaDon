@@ -21,6 +21,12 @@ const styles = StyleSheet.create({
         bottom:2,
         width:'100%',
         height:120,
+        backgroundColor:'#6495ED'
+    },
+    select:{
+        borderColor: "#20B2AA", 
+        borderWidth: 2, 
+        margin:6
     }
 })
 

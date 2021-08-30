@@ -16,15 +16,15 @@ const AboutMe = (props)=>{
             />
 
             <View style={{alignItems:"center"}}>
-                <Image
+                {/* <Image
                     style={{
                         width: Dimensions.get('window').width*0.3,
                         height: Dimensions.get('window').height*0.3,
                         resizeMode:'contain'
                     }}
                     source={logo}
-                />
-                 <Title style = {{paddingBottom:10}}>Đồ án môn học CS526</Title>
+                /> */}
+                 <Title style = {{paddingBottom:10}}>Đồ án môn học CS526.L21</Title>
                  {/* <Image></Image> */}
                  <Text style={{
                      paddingTop:10,
@@ -71,6 +71,21 @@ const AboutMe = (props)=>{
                      alignSelf:'stretch',
                      paddingLeft: config.deviceWidth * 0.1}}>
                      Email: 18521247@gm.uit.edu.vn
+                 </Text>
+                 <Text style={{
+                     fontSize:20,
+                     textAlign:'left',
+                     alignSelf:'stretch', 
+                     paddingLeft: config.deviceWidth * 0.1
+                     }}>4. Trần Văn Thục </Text>
+                 <Text style={{
+                     fontSize:15,
+                     paddingTop:10,
+                     paddingBottom:10,
+                     textAlign:'left',
+                     alignSelf:'stretch',
+                     paddingLeft: config.deviceWidth * 0.1}}>
+                     Email: 18521474@gm.uit.edu.vn
                  </Text>
              </View>
         </View>

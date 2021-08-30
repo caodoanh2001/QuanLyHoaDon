@@ -2,6 +2,8 @@ import {
     StyleSheet,
 } from 'react-native';
 
+import config from '../configs/config'
+
 const styles = StyleSheet.create({
     linearGradient:{
         height:'20%'
@@ -29,16 +31,33 @@ const styles = StyleSheet.create({
         color:'blue'
     },
     text:{
-        fontSize:18,
-        marginLeft:8,
-        marginTop:7
+        paddingTop:10,
+        fontSize:20,
+        paddingBottom:10,
+        textAlign:'left',
+        alignSelf:'stretch', 
+        paddingLeft: config.deviceWidth * 0.02,
+    },
+    text_info:{
+        paddingTop:10,
+        fontSize:20,
+        paddingBottom:5,
+        alignSelf:'stretch', 
+        textAlign: 'right',
+        paddingRight: config.deviceWidth * 0.02,
+        fontWeight: "bold"
     },
     info_text:{
         fontSize:20,
         paddingBottom:10,
         textAlign:'left',
         alignSelf: 'stretch', 
-    }
+    },
+    PopupModal: {
+        borderRadius: 20,
+        marginTop:config.deviceHeight*0.1,
+        marginBottom:config.deviceHeight*0.1,
+      },
 })
 
 export default styles;
