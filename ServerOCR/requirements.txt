@@ -1,0 +1,8 @@
+pydantic
+fastapi
+nest_asyncio
+pyngrok
+uvicorn
+scipy
+colabcode
+vietocr
